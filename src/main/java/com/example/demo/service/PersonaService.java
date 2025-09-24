@@ -2,17 +2,19 @@ package com.example.demo.service;
 
 import com.example.demo.model.Persona;
 import com.example.demo.repository.PersonaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class PersonaService {
 
     private final PersonaRepository personaRepository;
+
+    public PersonaService(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
+    }
 
     public List<Persona> findAll() {
         return personaRepository.findAll();

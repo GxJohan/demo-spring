@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Persona;
 import com.example.demo.service.PersonaService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,14 @@ public class PersonaController {
     }
 
     @PostMapping
-    public Persona createPersona(@RequestBody Persona persona) {
-        return personaService.save(persona);
+    public ResponseEntity<?> createPersona(@RequestBody Persona persona) {
+        if (persona.getNombre() == null || persona.getNombre().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("El campo 'nombre' es obligatorio");
+        }
+        if (persona.getApellido() == null || persona.getApellido().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("El campo 'apellido' es obligatorio");
+        }
+        return ResponseEntity.ok(personaService.save(persona));
     }
 
     @PutMapping("/{id}")
