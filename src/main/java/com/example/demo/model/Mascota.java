@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "mascotas")
@@ -23,6 +25,9 @@ public class Mascota {
     private String color;
 
     private String propietario;
+
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cita> citas = new ArrayList<>();
 
     public Mascota() {
     }
@@ -91,5 +96,25 @@ public class Mascota {
 
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+    public List<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(List<Cita> citas) {
+        this.citas = citas;
+    }
+
+    // Helper method para agregar cita
+    public void addCita(Cita cita) {
+        citas.add(cita);
+        cita.setMascota(this);
+    }
+
+    // Helper method para remover cita
+    public void removeCita(Cita cita) {
+        citas.remove(cita);
+        cita.setMascota(null);
     }
 }
